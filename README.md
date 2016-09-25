@@ -1,6 +1,6 @@
 # UseCasePattern
 
-[![Build Status](https://travis-ci.org/AbleTech/use_case_pattern.svg?branch=develop)](https://travis-ci.org/AbleTech/use_case_pattern)
+[![Build Status](https://travis-ci.org/AbleTech/use_case_pattern.svg?branch=master)](https://travis-ci.org/AbleTech/use_case_pattern)
 
 A module that helps you to implement the Use Case design pattern.
 
