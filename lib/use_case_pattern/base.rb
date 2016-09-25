@@ -27,7 +27,7 @@ module UseCasePattern
       perform
 
       if failure?
-        raise "Unexpected error #{errors.full_messages.join(', ')}"
+        raise_validation_error
       end
     end
 
