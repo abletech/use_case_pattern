@@ -49,13 +49,13 @@ class NumberMultiplier
 end
 ```
 
-You could call this simple example from a Rails Controller, or any else ready. Here is an example of calling a use case:
+You could call this simple example from a Rails Controller, or anywhere else really. Here is an example:
 
 ```ruby
   def multiply
     multiplier = NumberMultiplier.perform(params[:number1], params[:number2])
     
-    if multiplier.valid?
+    if multiplier.success?
       @result = multiplier.result
     else
       redirect_to :new, notice: multiplier.errors.full_messages
