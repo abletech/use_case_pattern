@@ -12,13 +12,13 @@ module UseCasePattern
         new(*args).tap { |use_case| use_case.perform }
       end
 
-      # raise an exception if perform generates any errors
+      # Raise an exception if perform generates any errors
       def perform!(*args)
         new(*args).tap { |use_case| use_case.perform! }
       end
     end
 
-    # implement all the steps required to complete this use case
+    # Implement all the steps required to complete this use case
     def perform
       raise NotImplementedError
     end
@@ -31,11 +31,12 @@ module UseCasePattern
       end
     end
 
-    # inside of perform, add errors if the use case did not succeed
+    # Has this use case performed its task successfully?
     def success?
       errors.none?
     end
 
+    # Did this use case have any errors?
     def failure?
       errors.any?
     end
