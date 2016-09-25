@@ -1,5 +1,7 @@
 # UseCasePattern
 
+[![Build Status](https://travis-ci.org/AbleTech/use_case_pattern.svg?branch=develop)](https://travis-ci.org/AbleTech/use_case_pattern)
+
 A module that helps you to implement the Use Case design pattern.
 
 This pattern is widely used by the teams at Abletech. We were first introduced to this pattern by Shevaun Coker at RubyConf AU 2015 in Melbourne, Australia. You can read more about this pattern in her blog post A [Case for Use Cases](http://webuild.envato.com/blog/a-case-for-use-cases/), and also in the [video of the presentation](https://rubyconf.eventer.com/rubyconf-australia-2015-1223/a-case-for-use-cases-by-shevaun-coker-1734) that she gave. 
