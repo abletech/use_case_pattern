@@ -16,7 +16,7 @@ module UseCasePattern
         end
       end
 
-      # Raise an exception if perform generates any errors
+      # Raise a validation error if perform has created any errors
       def perform!(*args)
         new(*args).tap { |use_case| use_case.perform! }
       end
