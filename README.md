@@ -65,6 +65,26 @@ You could call this simple example from a Rails Controller, or anywhere else rea
   end
 ```
 
+## Normal workflow
+
+### Initialisation
+
+You would normally define a constructor for your use case. The constructor should save any supplied parameters as instance variables. You usually shouldn't perform any processing or business logic in the constructor. 
+
+### Validation
+
+You should use ActiveModel validators to check that supplied parameters and any other dependencies are correct. You can write custom validation methods using the [validate method](http://api.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html#method-i-validate). Following the standard validation approach, you should add to the `errors` collection. 
+
+### Execution
+
+The `perform` method is where the execution your use case should happen. In this method, you should perform all of the processing and business logic of your use case. Results of the execution should be stored as instance variables. 
+
+Sometimes during the execution of the `perform` method, an error may occur. You could choose to add to the errors collection or alternatively raise an exception. You should only choose to add to the errors collection if you expect the caller to handle the error. 
+
+### Post-execution
+
+After the `perform` method has completed, the results should be available as instance variables. You would normally make these publicly accessible using a `attr_reader` method declaration. You should avoid declaring public methods that further process the output of the `perform` method. 
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
