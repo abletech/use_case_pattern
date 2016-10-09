@@ -4,7 +4,7 @@
 
 A module that helps you to implement the Use Case design pattern.
 
-This pattern is widely used by the teams at Abletech. We were first introduced to this pattern by Shevaun Coker at RubyConf AU 2015 in Melbourne, Australia. You can read more about this pattern in her blog post A [Case for Use Cases](http://webuild.envato.com/blog/a-case-for-use-cases/), and also in the [video of the presentation](https://rubyconf.eventer.com/rubyconf-australia-2015-1223/a-case-for-use-cases-by-shevaun-coker-1734) that she gave. 
+This pattern is widely used by the teams at Abletech. We were first introduced to this pattern by Shevaun Coker at RubyConf AU 2015 in Melbourne, Australia. You can read more about this pattern in her blog post A [Case for Use Cases](http://webuild.envato.com/blog/a-case-for-use-cases/), and also in the [video of the presentation](https://rubyconf.eventer.com/rubyconf-australia-2015-1223/a-case-for-use-cases-by-shevaun-coker-1734) that she gave.
 
 ## Installation
 
@@ -26,27 +26,27 @@ Or install it yourself as:
 
 When you follow the use case design pattern, you normally define a class with a constructor, and a perform method. You should include the `UseCasePattern` module. Here is a simple example:
 
-```ruby 
+```ruby
 class NumberMultiplier
   include UseCasePattern
 
   attr_reader :product
-  
+
   validates :number1, :number2, presence: true
 
   def initialize(number1, number2)
     @number1 = number1
     @number2 = number2
   end
-  
+
   def perform
     if valid?
       @product = number1 * number2
     end
   end
-  
+
   private
-  
+
   attr_reader :number1, :number2
 end
 ```
@@ -56,7 +56,7 @@ You could call this simple example from a Rails Controller, or anywhere else rea
 ```ruby
   def multiply
     multiplier = NumberMultiplier.perform(params[:number1], params[:number2])
-    
+
     if multiplier.success?
       @result = multiplier.result
     else
@@ -67,23 +67,37 @@ You could call this simple example from a Rails Controller, or anywhere else rea
 
 ## Normal workflow
 
+This section defines the expected approach to implementing a class which uses the use case pattern.
+
 ### Initialisation
 
-You would normally define a constructor for your use case. The constructor should save any supplied parameters as instance variables. You usually shouldn't perform any processing or business logic in the constructor. 
+You would normally define a constructor for your use case. The constructor should store any supplied parameters as instance variables. You shouldn't perform any processing or business logic in the constructor.
+
+The constructor is called with the parameters that are passed to the `perform` class method. For example, using the NumberMultiplier defined above, making a call to `NumberMultiplier.perform(1, 2)` will result in the initialiser being called as `initialize(1, 2)`.
 
 ### Validation
 
-You should use ActiveModel validators to check that supplied parameters and any other dependencies are correct. You can write custom validation methods using the [validate method](http://api.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html#method-i-validate). Following the standard validation approach, you should add to the `errors` collection. 
+You should use ActiveModel validators to check that supplied parameters and any other dependencies are correct. You can also write custom validation methods using the [validate method](http://api.rubyonrails.org/classes/ActiveModel/Validations/ClassMethods.html#method-i-validate). Following the standard validation approach, you should add to the `errors` collection if validation fails.
 
 ### Execution
 
-The `perform` method is where the execution your use case should happen. In this method, you should perform all of the processing and business logic of your use case. Results of the execution should be stored as instance variables. 
+The `perform` method is where the execution of the use case should happen. In this method, you should perform all of the processing and business logic of your use case. Results of the execution should be stored as instance variables.
 
-Sometimes during the execution of the `perform` method, an error may occur. You could choose to add to the errors collection or alternatively raise an exception. You should only choose to add to the errors collection if you expect the caller to handle the error. 
+Sometimes during the execution of the `perform` method, an error may occur. You could choose to add to the errors collection or alternatively raise an exception. You should only add to the errors collection if you expect the caller to handle the error.
+
+You should note that the value returned from the perform method is discarded. This encourages the caller to make use of the public accessor methods to access the results of the operation.
+
+#### The alternative `perform!` method
+
+The `perform!` method works in a similar manner to the ActiveRecord `save!` method. Should a validation or other error occur, an exception is raised. This method should be used in scenarios where the caller does not expect any errors to occur. One example of this is when the parameters have been pre-checked by a controller class or similar.
 
 ### Post-execution
 
-After the `perform` method has completed, the results should be available as instance variables. You would normally make these publicly accessible using a `attr_reader` method declaration. You should avoid declaring public methods that further process the output of the `perform` method. 
+After the `perform` method has completed, the results should be available as instance variables. You would normally make these publicly accessible using a `attr_reader` method declaration. You should avoid declaring public methods that further process the output of the `perform` method.
+
+#### Checking for errors
+
+The caller can check the success or failure of the use case by calling the `success?` and `failure?` helper methods. If the use case has had a failure, the errors will be available on the standard `errors` collection.
 
 ## Development
 
@@ -94,3 +108,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/abletech/use_case_pattern.
+
+## TODO
+
+* Execute the `valid?` method so use case authors don't need to
