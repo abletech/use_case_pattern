@@ -1,7 +1,10 @@
 require 'nokogiri'
 
+# Queries weather station data provided by harvestelectronics.com
 class Harvest
   include UseCasePattern
+
+  validates :station_id, presence: true
 
   def initialize(station_id:)
     @station_id = station_id.to_i

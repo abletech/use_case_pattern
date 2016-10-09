@@ -30,3 +30,13 @@ class ThingSpeakReporter
     params.merge(api_key: api_key)
   end
 end
+
+# example usage
+
+reporter = ThingSpeakReporter.perform(api_key: 'XZY123', params: {indoor_temperature: 22, outdoor_temperature: 15})
+
+if reporter.success?
+  puts "Temperature saved"
+else
+  puts "Oh dear, there is a problem: #{reporter.errors.full_messages.join('; ')}"
+end
