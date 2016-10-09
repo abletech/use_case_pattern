@@ -40,14 +40,8 @@ class NumberMultiplier
   end
 
   def perform
-    if valid?
-      @product = number1 * number2
-    end
+    @product = @number1 * @number2
   end
-
-  private
-
-  attr_reader :number1, :number2
 end
 ```
 
@@ -93,7 +87,7 @@ The `perform!` method works in a similar manner to the ActiveRecord `save!` meth
 
 ### Post-execution
 
-After the `perform` method has completed, the results should be available as instance variables. You would normally make these publicly accessible using a `attr_reader` method declaration. You should avoid declaring public methods that further process the output of the `perform` method.
+During the `perform` method, you should have stored the results as instance variables. You would normally make these publicly accessible using a `attr_reader` method declaration. You should avoid declaring public methods that further process the output of the `perform` method.
 
 #### Checking for errors
 
@@ -108,7 +102,3 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/abletech/use_case_pattern.
-
-## TODO
-
-* Execute the `valid?` method so use case authors don't need to
