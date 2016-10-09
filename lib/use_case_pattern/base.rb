@@ -9,7 +9,11 @@ module UseCasePattern
     module ClassMethods
       # The perform method of a UseCase should always return itself
       def perform(*args)
-        new(*args).tap { |use_case| use_case.perform }
+        new(*args).tap do |use_case|
+          if use_case.valid?
+            use_case.perform
+          end
+        end
       end
 
       # Raise an exception if perform generates any errors
@@ -24,19 +28,21 @@ module UseCasePattern
     end
 
     def perform!
-      perform
+      if valid?
+        perform
+      end
 
       if failure?
         raise_validation_error
       end
     end
 
-    # Has this use case performed its task successfully?
+    # Did the use case performed its task without errors?
     def success?
       errors.none?
     end
 
-    # Did this use case have any errors?
+    # Did the use case have any errors?
     def failure?
       errors.any?
     end
