@@ -53,7 +53,7 @@ describe UseCasePattern::Base do
 
     describe "#perform!" do
       it "should raise an error" do
-        expect { UseCaseThatGeneratesErrors.perform!(nil) }.to raise_error(UseCasePattern::ValidationError)
+        expect { UseCaseThatGeneratesErrors.perform!(nil) }.to raise_error(UseCasePattern::ValidationError, "Validation failed: Age can't be blank")
       end
     end
   end

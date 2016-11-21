@@ -28,7 +28,10 @@ module UseCasePattern
     end
 
     def perform!
-      valid? || raise(ValidationError.new)
+      if invalid?
+        raise(ValidationError.new(self))
+      end
+
       perform
     end
 
@@ -54,5 +57,12 @@ module UseCasePattern
   # This class may be deprecated by ActiveModel::ValidationError in the future.
   #
   class ValidationError < StandardError
+    attr_reader :model
+
+    def initialize(model)
+      @model = model
+      errors = @model.errors.full_messages.join(", ")
+      super("Validation failed: " + errors)
+    end
   end
 end
