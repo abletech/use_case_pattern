@@ -28,13 +28,11 @@ module UseCasePattern
     end
 
     def perform!
-      if valid?
-        perform
+      if invalid?
+        raise(ValidationError.new(self))
       end
 
-      if failure?
-        raise_validation_error
-      end
+      perform
     end
 
     # Did the use case performed its task without errors?
@@ -45,6 +43,26 @@ module UseCasePattern
     # Did the use case have any errors?
     def failure?
       errors.any?
+    end
+  end
+
+  # Use Case Pattern ValidationError
+  #
+  # Raised by <tt>perform!</tt> when validations result in errors.
+  #
+  # Check the use case +errors+ object for attribute error messages.
+  #
+  # ActiveModel 5.0 has an ActiveModel::ValidationError class, prior versions including 4.2 do not.
+  #
+  # This class may be deprecated by ActiveModel::ValidationError in the future.
+  #
+  class ValidationError < StandardError
+    attr_reader :model
+
+    def initialize(model)
+      @model = model
+      errors = @model.errors.full_messages.join(", ")
+      super("Validation failed: " + errors)
     end
   end
 end
