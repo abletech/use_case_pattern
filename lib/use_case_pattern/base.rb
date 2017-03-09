@@ -61,6 +61,8 @@ module UseCasePattern
 
     def initialize(model)
       @model = model
+      # ActiveModel validations initializes errors with an Errors.new(self) object so
+      # if @model.errors is nil, it will cause a nil pointer when the errors are cleared
       errors = @model.errors.full_messages.join(", ") if @model.errors.present?
       super("Validation failed: " + errors)
     end
