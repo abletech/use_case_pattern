@@ -61,7 +61,7 @@ module UseCasePattern
 
     def initialize(model)
       @model = model
-      errors = @model.errors.full_messages.join(", ")
+      errors = @model.errors.full_messages.join(", ") if @model.errors.present?
       super("Validation failed: " + errors)
     end
   end
