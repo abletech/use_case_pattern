@@ -93,6 +93,35 @@ During the `perform` method, you should have stored the results as instance vari
 
 The caller can check the success or failure of the use case by calling the `success?` and `failure?` helper methods. If the use case has had a failure, the errors will be available on the standard `errors` collection.
 
+## Testing
+When a use case is used in a class to perform an action or query, it can be handy to use a mock for the use case when testing the class.
+To do so, `require 'use_case_mock'` in your specs and use the UseCaseMock class to create the state of the use case after the perform action. This is particularly handy when you want to add errors and keep a stable use case behaviour.
+Adding errors to the mock will make the use case failed? **but** not invalid? if `perform!` is called.
+
+```ruby
+require 'spec_helper'
+require 'use_case_mock'
+
+RSpec.describe MyParentClass do
+
+  before do
+    use_case = UseCaseMock.new(results: [])
+    use_case.errors.add(:base, 'Could not fetch results from 3rd party API')
+
+    allow(MyUseCase).to receive(:perform) { use_case }
+  end
+
+  describe '.upload' do
+    it 'does something' do
+      MyParentClass.upload('/some/random/file.txt')
+
+      # ...
+    end
+  end
+end
+
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
