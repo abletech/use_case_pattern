@@ -1,5 +1,7 @@
 # AddressFinder 1.0.3 (May 27, 2020)
 
+* Add support for Ruby 2.7
+* Drop support for Ruby 2.2
 * Ruby 2.7 deprecated the use of hashes in the last argument of a method call. We added a check to handle that deprecation. Read more here: https://www.ruby-lang.org/en/news/2019/12/12/separation-of-positional-and-keyword-arguments-in-ruby-3-0/
 
 # AddressFinder 1.0.2 (November 22, 2016) #
