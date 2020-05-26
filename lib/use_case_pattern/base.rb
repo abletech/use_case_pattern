@@ -9,7 +9,7 @@ module UseCasePattern
     module ClassMethods
       # The perform method of a UseCase should always return itself
       def perform(*args)
-        new(*args).tap do |use_case|
+        use_case(*args).tap do |use_case|
           if use_case.valid?
             use_case.perform
           end
@@ -18,7 +18,20 @@ module UseCasePattern
 
       # Raise a validation error if perform has created any errors
       def perform!(*args)
-        new(*args).tap { |use_case| use_case.perform! }
+        use_case(*args).tap { |use_case| use_case.perform! }
+      end
+
+      private 
+
+      # initialises the use_case, making sure that any keyword arguments are
+      # dealt with appropriately: https://piechowski.io/post/last-arg-keyword-deprecated-ruby-2-7/
+      def use_case(*args)
+        if args.last.is_a?(Hash)
+          keyword_arguments = args.pop
+          new(*args, **keyword_arguments)
+        else
+          new(*args)
+        end
       end
     end
 

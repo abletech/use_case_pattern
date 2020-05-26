@@ -31,6 +31,59 @@ describe UseCasePattern::Base do
         expect { UseCaseWithMissingPerformMethod.perform }.to raise_error(NotImplementedError)
       end
     end
+
+    context "with a class containing a constructor with hash arguments" do 
+      subject(:result){ UseCaseWithConstructorContainingHash.perform(name: "Bert", age: 5) }
+
+      it "should have no errors" do
+        expect(result.errors.full_messages).to eq([])
+      end
+
+      it "should return the use case object" do
+        expect(result.class).to eq(UseCaseWithConstructorContainingHash)
+      end
+
+      it "should have set the name and age" do 
+        expect(result.age).to eq(5)
+        expect(result.name).to eq("Bert")
+      end
+    end
+
+    context "with a class containing a constructor with multiple arguments" do 
+      subject(:result){ UseCaseWithConstructorContainingStringAndHash.perform("Rocket", height: 50, width: 5) }
+
+      it "should have no errors" do
+        expect(result.errors.full_messages).to eq([])
+      end
+
+      it "should return the use case object" do
+        expect(result.class).to eq(UseCaseWithConstructorContainingStringAndHash)
+      end
+
+      it "should have set the name and age" do 
+        expect(result.label).to eq("Rocket")
+        expect(result.height).to eq(50)
+        expect(result.width).to eq(5)
+      end
+    end
+
+    context "with a class containing a constructor with multiple hashes" do 
+      subject(:result){ UseCaseWithConstructorContainingTwoHashes.perform({label: "Rocket"}, height: 50, width: 5) }
+
+      it "should have no errors" do
+        expect(result.errors.full_messages).to eq([])
+      end
+
+      it "should return the use case object" do
+        expect(result.class).to eq(UseCaseWithConstructorContainingTwoHashes)
+      end
+
+      it "should have set the name and age" do 
+        expect(result.label).to eq("Rocket")
+        expect(result.height).to eq(50)
+        expect(result.width).to eq(5)
+      end
+    end
   end
 
   context "with a use case that generates errors" do
@@ -71,6 +124,50 @@ class UseCaseWithConstructor
 
   def initialize(temperature)
     @temperature = temperature
+  end
+
+  def perform
+  end
+end
+
+class UseCaseWithConstructorContainingHash
+  include UseCasePattern
+
+  attr_reader :name, :age
+
+  def initialize(name:, age:)
+    @name = name
+    @age = age
+  end
+
+  def perform
+  end
+end
+
+class UseCaseWithConstructorContainingTwoHashes
+  include UseCasePattern
+
+  attr_reader :label, :height, :width
+
+  def initialize(my_hash, height:, width:)
+    @label = my_hash[:label]
+    @height = height
+    @width = width
+  end
+
+  def perform
+  end
+end
+
+class UseCaseWithConstructorContainingStringAndHash
+  include UseCasePattern
+
+  attr_reader :label, :height, :width
+
+  def initialize(label, height:, width:)
+    @label = label
+    @height = height
+    @width = width
   end
 
   def perform
