@@ -1,3 +1,6 @@
+# AddressFinder 1.0.4 (Aug 8, 2022)
+
+* Add support for Ruby 3
 # AddressFinder 1.0.3 (May 27, 2020)
 
 * Add support for Ruby 2.7
@@ -6,7 +9,7 @@
 
 # AddressFinder 1.0.2 (November 22, 2016) #
 
-* Raise a ValidationError when #perform! fails rather that call the Rails 5 
+* Raise a ValidationError when #perform! fails rather that call the Rails 5
   specific #raise_validation_error method
 
 # AddressFinder 1.0.1 (October 12, 2016) #
